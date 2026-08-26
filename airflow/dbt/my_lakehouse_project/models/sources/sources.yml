@@ -1,0 +1,15 @@
+version: 2
+sources:
+  - name: bronze_data
+    description: "Source data in the bronze schema"
+    database: nessie
+    schema: bronze
+    tables:
+      - name: raw_company_system
+        columns:
+          - name: Transaction_ID
+            description: "Unique identifier for each transaction"
+            data_tests:
+              - assert_no_duplicates
+      - name: raw_competitor_scraper        
+    

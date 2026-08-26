@@ -1,0 +1,60 @@
+# Add this service block into your existing lakehouse/docker-compose.yml,
+# alongside catalog/minio/dremio - same file, same lakehouse-network, so it
+# can reach Dremio for /predict's live Dremio lookups without any extra
+# networking setup.
+#
+# Does NOT depend on catalog/minio/dremio being healthy before starting -
+# /health will report {"model_loaded": true} even if Dremio is unreachable,
+# since the model itself doesn't need Dremio to load. /predict WILL fail
+# per-request if Dremio is unreachable, which is the correct failure
+# boundary: a transient Dremio outage shouldn't crash the whole API
+# container, just the requests that actually need it.
+version: "3.8"
+
+services:
+  pricing-api:
+    build:
+      context: ../pricing_ml
+      dockerfile: fastapi_app/Dockerfile
+    container_name: pricing-api
+    environment:
+      MODEL_PATH: /app/models/demand_model.joblib
+      RECOMMENDATIONS_SOURCE: parquet   # switch to "dremio" once the Spark write-back into nessie.ml.price_recommendations is built
+      RECOMMENDATIONS_PARQUET_PATH: /app/output/price_recommendations.parquet
+      DREMIO_REST_HOST: dremio
+      DREMIO_USER: mofah
+      DREMIO_PASSWORD: fahmy12345
+    volumes:
+      # Shared with wherever the Airflow training/scoring DAGs write their
+      # output - same files, mounted read-only here since the API only
+      # ever reads what training/scoring already produced.
+      - pricing-models:/app/models:ro
+      # - /home/ninja/lakehouse-docker/ml/ml_models/:/app/models:ro
+      - pricing-output:/app/output:ro
+    networks:
+      - lakehouse-network
+    ports:
+      - 8100:8100
+      
+    depends_on:
+      - dremio
+ 
+# Add these two named volumes to the existing `volumes:` top-level block:
+#   pricing-models:
+#   pricing-output:
+#
+# And populate them from wherever run_pricing_pipeline.py actually runs
+# (e.g. the Airflow scheduler container) - either mount the same named
+# volumes into that container too, or have the training/scoring DAG tasks
+# write directly to these paths if Airflow and this compose project share
+# a filesystem.
+
+
+
+
+
+volumes:
+  pricing-models:
+    name: pricing-models
+  pricing-output:
+    name: pricing-output

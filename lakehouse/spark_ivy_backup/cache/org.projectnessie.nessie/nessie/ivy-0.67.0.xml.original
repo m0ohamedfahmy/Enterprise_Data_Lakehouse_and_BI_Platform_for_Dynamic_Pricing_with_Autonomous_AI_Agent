@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.projectnessie.nessie</groupId>
+  <artifactId>nessie</artifactId>
+  <version>0.67.0</version>
+  <packaging>pom</packaging>
+  <name>Nessie</name>
+  <description>Transactional Catalog for Data Lakes</description>
+  <url>https://github.com/projectnessie/nessie</url>
+  <inceptionYear>2020</inceptionYear>
+  <organization>
+    <name>Project Nessie</name>
+    <url>https://projectnessie.org</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>jacques-n</id>
+      <name>Jacques Nadeau</name>
+      <url>https://github.com/jacques-n</url>
+    </developer>
+    <developer>
+      <id>rymurr</id>
+      <name>Ryan Murray</name>
+      <url>https://github.com/rymurr</url>
+    </developer>
+    <developer>
+      <id>laurentgo</id>
+      <name>Laurent Goujon</name>
+      <url>https://github.com/laurentgo</url>
+    </developer>
+    <developer>
+      <id>snazy</id>
+      <name>Robert Stupp</name>
+      <url>https://github.com/snazy</url>
+    </developer>
+    <developer>
+      <id>nastra</id>
+      <name>Eduard Tudenhoefner</name>
+      <url>https://github.com/nastra</url>
+    </developer>
+    <developer>
+      <id>dimas-b</id>
+      <name>Dmitri Bourlatchkov</name>
+      <url>https://github.com/dimas-b</url>
+    </developer>
+    <developer>
+      <id>omarsmak</id>
+      <name>Omar Al-Safi</name>
+      <url>https://github.com/omarsmak</url>
+    </developer>
+    <developer>
+      <id>tomekl007</id>
+      <name>Tomasz Lelek</name>
+      <url>https://github.com/tomekl007</url>
+    </developer>
+    <developer>
+      <id>XN137</id>
+      <name>Christopher Lambert</name>
+      <url>https://github.com/XN137</url>
+    </developer>
+    <developer>
+      <id>harshm-dev</id>
+      <name>Harsh Maheshwari</name>
+      <url>https://github.com/harshm-dev</url>
+    </developer>
+    <developer>
+      <id>ajantha-bhat</id>
+      <name>Ajantha Bhat</name>
+      <url>https://github.com/ajantha-bhat</url>
+    </developer>
+    <developer>
+      <id>dalaro</id>
+      <name>Dan LaRocque</name>
+      <url>https://github.com/dalaro</url>
+    </developer>
+    <developer>
+      <id>VladimirYushkevich</id>
+      <name>Uladzimir Yushkevich</name>
+      <url>https://github.com/VladimirYushkevich</url>
+    </developer>
+    <developer>
+      <id>adutra</id>
+      <name>Alexandre Dutra</name>
+      <url>https://github.com/adutra</url>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>hpolloni</name>
+      <url>https://github.com/hpolloni</url>
+    </contributor>
+    <contributor>
+      <name>ryantse</name>
+      <url>https://github.com/ryantse</url>
+    </contributor>
+    <contributor>
+      <name>maheshsapkal</name>
+      <url>https://github.com/maheshsapkal</url>
+    </contributor>
+  </contributors>
+  <mailingLists>
+    <mailingList>
+      <name>Project Nessie List</name>
+      <subscribe>projectnessie-subscribe@googlegroups.com</subscribe>
+      <unsubscribe>projectnessie-unsubscribe@googlegroups.com</unsubscribe>
+      <post>projectnessie@googlegroups.com</post>
+      <archive>https://groups.google.com/g/projectnessie</archive>
+    </mailingList>
+  </mailingLists>
+  <scm>
+    <connection>scm:git:https://github.com/projectnessie/nessie</connection>
+    <developerConnection>scm:git:https://github.com/projectnessie/nessie</developerConnection>
+    <tag>main</tag>
+    <url>https://github.com/projectnessie/nessie/tree/main</url>
+  </scm>
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/projectnessie/nessie/issues</url>
+  </issueManagement>
+</project>

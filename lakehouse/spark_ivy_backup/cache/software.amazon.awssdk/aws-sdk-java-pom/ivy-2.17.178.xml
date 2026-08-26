@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
+	<info organisation="software.amazon.awssdk"
+		module="aws-sdk-java-pom"
+		revision="2.17.178"
+		status="release"
+		publication="20220426193236"
+	>
+		<license name="Apache License, Version 2.0" url="https://aws.amazon.com/apache2.0" />
+		<description homepage="https://aws.amazon.com/sdkforjava">
+		The Amazon Web Services SDK for Java provides Java APIs
+        for building software on AWS&apos; cost-effective, scalable, and reliable
+        infrastructure products. The AWS Java SDK allows developers to code
+        against APIs for all of Amazon&apos;s infrastructure web services (Amazon
+        S3, Amazon EC2, Amazon SQS, Amazon Relational Database Service, Amazon
+        AutoScaling, etc).
+		</description>
+		<m:properties__maven-checkstyle-plugin.version>3.1.2</m:properties__maven-checkstyle-plugin.version>
+		<m:properties__wiremock.version>2.32.0</m:properties__wiremock.version>
+		<m:properties__junit4.version>4.13.2</m:properties__junit4.version>
+		<m:properties__japicmp-maven-plugin.version>0.15.6</m:properties__japicmp-maven-plugin.version>
+		<m:properties__httpcomponents.httpcore.version>4.4.13</m:properties__httpcomponents.httpcore.version>
+		<m:properties__maven-gpg-plugin.version>1.6</m:properties__maven-gpg-plugin.version>
+		<m:properties__jackson.version>2.13.2</m:properties__jackson.version>
+		<m:properties__skip.unit.tests>${skipTests}</m:properties__skip.unit.tests>
+		<m:properties__netty-open-ssl-version>2.0.46.Final</m:properties__netty-open-ssl-version>
+		<m:properties__maven-javadoc-plugin.version>3.0.1</m:properties__maven-javadoc-plugin.version>
+		<m:properties__slf4j.version>1.7.30</m:properties__slf4j.version>
+		<m:properties__xmlunit.version>1.3</m:properties__xmlunit.version>
+		<m:properties__testng.version>7.1.0</m:properties__testng.version>
+		<m:properties__commons-codec.verion>1.10</m:properties__commons-codec.verion>
+		<m:properties__equalsverifier.version>3.7.1</m:properties__equalsverifier.version>
+		<m:properties__freemarker.version>2.3.9</m:properties__freemarker.version>
+		<m:properties__netty-reactive-streams-http.version>2.0.5</m:properties__netty-reactive-streams-http.version>
+		<m:properties__log4j.version>2.17.1</m:properties__log4j.version>
+		<m:properties__spotbugs.version>4.2.3</m:properties__spotbugs.version>
+		<m:properties__maven-jar-plugin.version>3.1.1</m:properties__maven-jar-plugin.version>
+		<m:properties__nexus-staging-maven-plugin.version>1.6.8</m:properties__nexus-staging-maven-plugin.version>
+		<m:properties__javapoet.verion>1.13.0</m:properties__javapoet.verion>
+		<m:properties__commons.lang.version>3.12.0</m:properties__commons.lang.version>
+		<m:properties__maven-compiler-plugin.version>3.8.1</m:properties__maven-compiler-plugin.version>
+		<m:properties__spring.version>3.0.7.RELEASE</m:properties__spring.version>
+		<m:properties__jackson.databind.version>2.13.2.2</m:properties__jackson.databind.version>
+		<m:properties__org.eclipse.text.version>3.5.101</m:properties__org.eclipse.text.version>
+		<m:properties__jimfs.version>1.1</m:properties__jimfs.version>
+		<m:properties__exec-maven-plugin.version>1.6.0</m:properties__exec-maven-plugin.version>
+		<m:properties__jmh.version>1.29</m:properties__jmh.version>
+		<m:properties__reactive-streams.version>1.0.3</m:properties__reactive-streams.version>
+		<m:properties__netty.version>4.1.72.Final</m:properties__netty.version>
+		<m:properties__commons-lang.verson>2.6</m:properties__commons-lang.verson>
+		<m:properties__junit5.version>5.8.1</m:properties__junit5.version>
+		<m:properties__dynamodb-local.version>1.16.0</m:properties__dynamodb-local.version>
+		<m:properties__sqllite.version>1.0.392</m:properties__sqllite.version>
+		<m:properties__eventstream.version>1.0.1</m:properties__eventstream.version>
+		<m:properties__rxjava.version>2.2.21</m:properties__rxjava.version>
+		<m:properties__jetty.version>9.4.45.v20220203</m:properties__jetty.version>
+		<m:properties__guava.version>29.0-jre</m:properties__guava.version>
+		<m:properties__blockhound.version>1.0.6.RELEASE</m:properties__blockhound.version>
+		<m:properties__hamcrest.version>1.3</m:properties__hamcrest.version>
+		<m:properties__maven-dependency-plugin.version>3.1.1</m:properties__maven-dependency-plugin.version>
+		<m:properties__awsjavasdk.previous.version>2.17.177</m:properties__awsjavasdk.previous.version>
+		<m:properties__httpcomponents.httpclient.version>4.5.13</m:properties__httpcomponents.httpclient.version>
+		<m:properties__unitils.version>3.4.6</m:properties__unitils.version>
+		<m:properties__maven-wrapper-plugin.version>3.1.0</m:properties__maven-wrapper-plugin.version>
+		<m:properties__maven.build.timestamp.format>yyyy</m:properties__maven.build.timestamp.format>
+		<m:properties__jre.version>1.8</m:properties__jre.version>
+		<m:properties__jacksonjr.version>2.13.2</m:properties__jacksonjr.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__assertj.version>3.20.2</m:properties__assertj.version>
+		<m:properties__aspectj.version>1.8.2</m:properties__aspectj.version>
+		<m:properties__maven.surefire.version>3.0.0-M5</m:properties__maven.surefire.version>
+		<m:properties__jacoco-maven-plugin.version>0.8.7</m:properties__jacoco-maven-plugin.version>
+		<m:properties__maven-deploy-plugin.version>2.8.2</m:properties__maven-deploy-plugin.version>
+		<m:properties__json-path.version>2.4.0</m:properties__json-path.version>
+		<m:properties__maven-failsafe-plugin.version>3.0.0-M5</m:properties__maven-failsafe-plugin.version>
+		<m:properties__awscrt.version>0.16.1</m:properties__awscrt.version>
+		<m:properties__awsjavasdk.version>${project.version}</m:properties__awsjavasdk.version>
+		<m:properties__org.eclipse.jdt.version>3.10.0</m:properties__org.eclipse.jdt.version>
+		<m:properties__mockito.version>4.3.1</m:properties__mockito.version>
+		<m:properties__build-helper-maven-plugin.version>3.0.0</m:properties__build-helper-maven-plugin.version>
+		<m:properties__checkstyle.version>8.42</m:properties__checkstyle.version>
+		<m:properties__commons.io.version>2.5</m:properties__commons.io.version>
+		<m:properties__additionalparam>-Xdoclint:none</m:properties__additionalparam>
+		<m:maven.plugins>org.codehaus.mojo__build-helper-maven-plugin__3.0.0|org.apache.maven.plugins__maven-compiler-plugin__3.8.1|org.apache.maven.plugins__maven-javadoc-plugin__3.0.1|org.apache.maven.plugins__maven-dependency-plugin__3.1.1|org.apache.maven.plugins__maven-checkstyle-plugin__3.1.2|org.jacoco__jacoco-maven-plugin__0.8.7|com.github.spotbugs__spotbugs-maven-plugin__4.2.3|com.github.siom79.japicmp__japicmp-maven-plugin__0.15.6|org.apache.maven.plugins__maven-wrapper-plugin__3.1.0</m:maven.plugins>
+	</info>
+	<configurations>
+		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>
+		<conf name="master" visibility="public" description="contains only the artifact published by this module itself, with no transitive dependencies"/>
+		<conf name="compile" visibility="public" description="this is the default scope, used if none is specified. Compile dependencies are available in all classpaths."/>
+		<conf name="provided" visibility="public" description="this is much like compile, but indicates you expect the JDK or a container to provide it. It is only available on the compilation classpath, and is not transitive."/>
+		<conf name="runtime" visibility="public" description="this scope indicates that the dependency is not required for compilation, but is for execution. It is in the runtime and test classpaths, but not the compile classpath." extends="compile"/>
+		<conf name="test" visibility="public" description="this scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases." extends="runtime"/>
+		<conf name="system" visibility="public" description="this scope is similar to provided except that you have to provide the JAR which contains it explicitly. The artifact is always available and is not looked up in a repository."/>
+		<conf name="sources" visibility="public" description="this configuration contains the source artifact of this module, if any."/>
+		<conf name="javadoc" visibility="public" description="this configuration contains the javadoc artifact of this module, if any."/>
+		<conf name="optional" visibility="public" description="contains all optional dependencies"/>
+	</configurations>
+	<publications>
+	</publications>
+</ivy-module>

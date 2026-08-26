@@ -1,0 +1,21 @@
+product_id,product_name,category,sub_category
+100,Prod_100,Beverages,Soft Drinks
+101,Prod_101,Beverages,Juices
+102,Prod_102,Beverages,Hot Drinks
+103,Prod_103,Beverages,Energy Drinks
+104,Prod_104,Beverages,Bottled Water
+105,Prod_105,Groceries,Dairy
+106,Prod_106,Groceries,Snacks
+107,Prod_107,Groceries,Grains 
+108,Prod_108,Groceries,Canned Food
+109,Prod_109,Groceries,Oils 
+110,Prod_110,Personal Care,Shampoo
+111,Prod_111,Personal Care,Skincare
+112,Prod_112,Personal Care,Oral Care
+113,Prod_113,Personal Care,Deodorants
+114,Prod_114,Personal Care,Body Wash
+115,Prod_115,Home Care,Detergents
+116,Prod_116,Home Care,Surface Cleaners
+117,Prod_117,Home Care,Paper Products
+118,Prod_118,Home Care,Dishwashing Soap
+119,Prod_119,Home Care,Air Fresheners

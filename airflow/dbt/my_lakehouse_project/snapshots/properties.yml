@@ -1,0 +1,8 @@
+version: 2
+snapshots:
+  - name: snapshot_products
+    data_tests:
+      - no_scd2_overlapping_windows:
+          id_col: product_key           
+          valid_from_col: dbt_valid_from 
+          valid_to_col: dbt_valid_to    

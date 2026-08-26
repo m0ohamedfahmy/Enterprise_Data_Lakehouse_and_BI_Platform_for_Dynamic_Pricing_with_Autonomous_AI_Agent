@@ -1,0 +1,142 @@
+version: 2
+models:
+  - name: silver_company_system
+    columns:
+      - name: record_type
+        data_tests:
+          - not_null
+          - accepted_values:
+                values: ['Sales', 'Store_Expense']
+      - name: transaction_id
+        data_tests:
+          - not_null
+          - unique
+          - matches_regex:
+              regex: '^Tx-[0-9]+$'  
+          - assert_no_duplicates    
+      - name: transaction_date
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - valid_date_range
+      - name: store_id
+        data_tests:
+          - not_null
+          - matches_regex:
+              regex: '^-?[0-9]+(\.[0-9]+)?$'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER    
+      - name : store_name
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING
+          - matches_regex:
+              regex: '^^Branch_[0-9]+$'
+      - name : store_city    
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING                
+          - accepted_values:
+                values: ['Alexandria', 'Cairo','Giza','Mansoura','Tanta']
+      - name: store_region
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING
+          - accepted_values:
+                values: ['Greater Cairo', 'Alex Coast','Delta']
+      - name: product_id
+        data_tests:
+          - not_null
+      - name : product_name
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING
+      - name : category
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING
+          - accepted_values:
+                values: ['Beverages', 'Groceries','Home Care','Personal Care','Non-Product Expense']    
+      - name : sub_category   
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING
+      - name : quantity
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER      
+      - name : unit_cost
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double     
+      - name : unit_retail
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double    
+      - name : expense_type   
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING              
+      - name : expense_amount   
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double              
+
+
+  - name: silver_competitor
+    columns:
+      - name: competitor_key 
+        data_tests:
+          - not_null        
+      - name: product_key 
+        data_tests:
+          - not_null          
+      - name: date_key 
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER          
+          - matches_regex:
+              regex: '^(19|20)[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$'         
+      - name: scraped_at
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - valid_date_range
+      - name : competitor_name
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING
+          - accepted_values:
+                values: ['Carrefour', 'Fathallah','Lulu']    
+      - name: product_id
+        data_tests:
+          - not_null                        
+      - name: product_name 
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: CHARACTER VARYING         
+          - matches_regex:
+              regex: '^Prod_[0-9]+$'
+      - name: competitor_price 
+        data_tests:
+          - test_cleaned_price_bounds:
+              ref_model: ref('silver_company_system')   # Reference model used to compute the average price
+              group_by_col: product_id                  # Primary join key for aggregation
+              price_ref_col: unit_retail                # Original price column in the reference model                
+              upper_multiplier: 5
+              lower_multiplier: 0.1                          

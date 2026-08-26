@@ -1,0 +1,46 @@
+[0m18:46:23.867872 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7a7e445b1e80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7a7e426adbd0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7a7e426ada90>]}
+
+
+============================== 18:46:23.903818 | 4566a60d-1c71-462f-9388-e6089464dae8 ==============================
+[0m18:46:23.903818 [info ] [MainThread]: Running with dbt=1.8.9
+[0m18:46:23.906494 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'fail_fast': 'False', 'log_path': 'logs', 'profiles_dir': '/home/ninja/.dbt', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'log_format': 'default', 'static_parser': 'True', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'invocation_command': 'dbt init my_lakehouse_project', 'send_anonymous_usage_stats': 'True'}
+[0m18:46:24.016888 [warn ] [MainThread]: [ConfigFolderDirectory]: Unable to parse logging event dictionary. Failed to parse dir field: expected string or bytes-like object, got 'PosixPath'.. Dictionary: {'dir': PosixPath('/home/ninja/.dbt')}
+[0m18:46:24.019898 [info ] [MainThread]: Creating dbt configuration folder at 
+[0m18:46:24.040605 [debug] [MainThread]: Starter project path: /home/ninja/lakehouse-docker/venv/lib/python3.13/site-packages/dbt/include/starter_project
+[0m18:46:24.135904 [info ] [MainThread]: 
+Your new dbt project "my_lakehouse_project" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m18:46:24.138313 [info ] [MainThread]: Setting up your profile.
+[0m18:55:15.672269 [info ] [MainThread]: Profile my_lakehouse_project written to /home/ninja/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m18:55:15.748278 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 532.0187, "process_in_blocks": "4784", "process_kernel_time": 0.923877, "process_mem_max_rss": "100664", "process_out_blocks": "80", "process_user_time": 4.964299}
+[0m18:55:15.762675 [debug] [MainThread]: Command `dbt init` succeeded at 18:55:15.756141 after 532.03 seconds
+[0m18:55:15.770753 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7a7e422208a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7a7e421856d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7a7e421a5040>]}
+[0m18:55:15.776352 [debug] [MainThread]: Flushing usage events
+[0m16:07:30.166066 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x77543bcb1e80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x775439cf1bd0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x775439cf1a90>]}
+
+
+============================== 16:07:30.397934 | 3ad7b50e-c795-4b83-a808-2a282bd8e277 ==============================
+[0m16:07:30.397934 [info ] [MainThread]: Running with dbt=1.8.9
+[0m16:07:30.401180 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/ninja/.dbt', 'debug': 'False', 'warn_error': 'None', 'log_path': 'logs', 'fail_fast': 'False', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'False', 'log_format': 'default', 'introspect': 'True', 'static_parser': 'True', 'invocation_command': 'dbt run', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m16:07:30.404129 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /home/ninja/lakehouse-docker/airflow/dbt/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m16:07:30.432135 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": false, "command_wall_clock_time": 0.43282843, "process_in_blocks": "77352", "process_kernel_time": 1.721538, "process_mem_max_rss": "95472", "process_out_blocks": "24", "process_user_time": 4.593632}
+[0m16:07:30.435231 [debug] [MainThread]: Command `dbt run` failed at 16:07:30.434459 after 0.44 seconds
+[0m16:07:30.437435 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x775439afc2b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x775439b457f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x775439cf79b0>]}
+[0m16:07:30.448361 [debug] [MainThread]: Flushing usage events

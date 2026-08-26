@@ -1,0 +1,16 @@
+b_models/
+lakehouse_agent/
+Iceberg_Pipeline_Documentation.docx
+iceberg_pipeline_execution_flow.html
+setup.md
+sql_dremio_query.md
+lakehouse/notebooks/demand_model.joblib_fi
+lakehouse/notebooks/demand_model.joblib_fi_1
+lakehouse/notebooks/main.py
+lakehouse/notebooks/main2.py
+lakehouse/notebooks/output.csv
+lakehouse/notebooks/price_optimizer.ipynb
+lakehouse/notebooks/price_recommendations_end.parquet
+lakehouse/notebooks/test.py
+lakehouse/notebooks/Untitled.ipynb
+lakehouse/notebooks/utils.py

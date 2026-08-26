@@ -1,0 +1,56 @@
+version: "3.1"
+
+
+# Shared so we don't repeat the same block three times below.
+x-lakehouse-env: &lakehouse-env
+  DREMIO_REST_HOST: "dremio"
+  DREMIO_REST_PORT: "9047"      
+  DREMIO_FLIGHT_PORT: "32010"   
+  MINIO_ENDPOINT: "http://minio:9000"
+  NESSIE_URI: "http://nessie:19120/api/v1"  
+services:
+
+  api-server:
+    user: root  
+    volumes:
+      - ./dbt:/usr/local/airflow/dbt:rw  
+      # - pricing-models:/usr/local/airflow/models:rw
+      # - pricing-output:/usr/local/airflow/output:rw     
+    networks:
+      - default
+      - lakehouse-network
+    environment:
+      <<: *lakehouse-env      
+
+  scheduler:
+    user: root
+    volumes:
+      - ./dbt:/usr/local/airflow/dbt:rw
+      # - pricing-models:/usr/local/airflow/models:rw
+      # - pricing-output:/usr/local/airflow/output:rw   
+      - /var/run/docker.sock:/var/run/docker.sock      
+    networks:
+      - default
+      - lakehouse-network
+    environment:
+      <<: *lakehouse-env
+  triggerer:
+    user: root  
+    volumes:
+      - ./dbt:/usr/local/airflow/dbt:rw
+      # - pricing-models:/usr/local/airflow/models:rw
+      # - pricing-output:/usr/local/airflow/output:rw         
+    networks:
+      - default
+      - lakehouse-network
+    environment:
+      <<: *lakehouse-env      
+# volumes:
+#   pricing-models:
+#     name: pricing-models
+#   pricing-output:
+#     name: pricing-output
+
+networks:
+  lakehouse-network:
+    external: true

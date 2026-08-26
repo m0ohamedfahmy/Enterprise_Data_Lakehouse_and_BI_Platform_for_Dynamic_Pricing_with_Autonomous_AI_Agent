@@ -1,0 +1,243 @@
+version: 2
+
+models:
+  - name: fact_store_sales
+    description: >
+      Transaction-grain fact table. One row per transaction_id, joined to
+      the point-in-time-correct version of dim_products, plus dim_stores
+      and dim_date. Unmatched dimension keys coalesce to -1.
+    config:
+      tags: ["fact_store_sales", "full_test"]
+      elementary:
+        timestamp_column: "full_date"
+    data_tests:   
+      - elementary.volume_anomalies:
+          time_bucket:
+            period: day
+            count: 1 
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+      - elementary.schema_changes
+          
+    columns:
+      - name: sales_key
+        description: Surrogate key generated from transaction_id.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: transaction_id
+        description: >
+          Natural transaction identifier. 
+        data_tests:
+          - not_null
+
+      - name: product_key
+        description: FK to dim_products, resolved to the SCD2-correct version. -1 = unmatched.
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_key
+              config:
+                where: "product_key != '-1'"
+
+      - name: store_key
+        description: FK to dim_stores. -1 = unmatched.
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_stores')
+              field: store_key
+              config:
+                where: "store_key != '-1'"
+
+      - name: date_key
+        description: FK to dim_date. -1 = unmatched.
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+              config:
+                where: "date_key != -1"
+
+      - name: quantity
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+          - elementary.column_anomalies:
+              column_anomalies: [sum, average, null_percent]
+
+      - name: unit_cost
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: unit_retail
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: gross_revenue
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+          - elementary.column_anomalies:
+              column_anomalies: [sum, average, min, max]              
+
+      - name: gross_margin_amount
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+          - elementary.column_anomalies:
+              column_anomalies: [sum, average, min, max]               
+                   
+
+  - name: fact_competitor_prices
+    description: >
+      Periodic snapshot fact - one row per competitor/product/scrape event.
+      competitor_price is semi-additive: aggregate with AVG/MIN/MAX/last-value
+      across scraped_at, never SUM.
+    config:
+      tags: ["fact_competitor_prices", "unmatched_competitor"]
+      elementary:
+        timestamp_column: "scraped_at"  
+
+    data_tests:
+      - assert_unmatched_keys_threshold:
+          product_col: competitor_key
+          store_col: product_key
+          date_col: date_key
+          threshold: 0.05
+      - elementary.volume_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+      - elementary.schema_changes
+      
+    columns:
+      - name: competitor_price_key
+        description: >
+          Surrogate key from product_id, competitor_name,scraped_at, competitor_price.
+          
+        data_tests:
+          - not_null
+          - unique
+          - assert_no_duplicates
+
+      - name: competitor_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_competitors')
+              field: competitor_key
+              config:
+                where: "competitor_key != '-1'"
+
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_key
+              config:
+                where: "product_key != '-1'"
+
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+              config:
+                where: "date_key != -1"
+
+      - name: scraped_at
+        data_tests:
+          - not_null
+
+      - name: competitor_price
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+          - elementary.column_anomalies:
+              column_anomalies: [average, min, max, variance]              
+
+
+  - name: fact_store_expenses
+    description: >
+      Periodic snapshot fact - one row per store/expense_type/month. Grain
+      is enforced upstream in silver_expenses, not by this model (no
+      aggregation happens here - see assert_expense_grain_is_enforced.sql).
+    config:
+      tags: ["fact_store_expenses"]
+      elementary:
+        timestamp_column: "month_start_date"
+    data_tests:
+      - elementary.volume_anomalies:
+          time_bucket:
+            period: month
+            count: 1
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: month
+            count: 1
+      - elementary.schema_changes              
+    columns:
+      - name: expense_key
+        description: >
+          generated surrogate ['store_key', 'expense_type_key', 'month_key']
+        data_tests:
+          - unique
+          - not_null
+
+      - name: store_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_stores')
+              field: store_key
+              config:
+                where: "store_key != '-1'"
+
+      - name: expense_type_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_expense_type')
+              field: expense_type_key
+              config:
+                where: "expense_type_key != '-1'"
+
+      - name: month_date_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_month')
+              field: month_key
+              config:
+                where: "month_date_key != -1"
+
+      - name: expense_amount
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"  
+          - elementary.column_anomalies:
+              column_anomalies: [sum, average, max] 
+              time_bucket:
+                period: month
+                count: 1                                       

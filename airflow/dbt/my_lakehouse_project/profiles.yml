@@ -1,0 +1,31 @@
+my_lakehouse_project:
+  outputs:
+    dev:
+      dremio_space: semantic_layer
+      dremio_space_folder: aggregation
+      object_storage_path: bronze
+      object_storage_source: nessie
+      password: fahmy12345
+      port: 9047
+      software_host: "{{ env_var('DREMIO_REST_HOST', '127.0.0.1') }}"
+      threads: 1
+      type: dremio
+      use_ssl: false
+      user: mofah
+  target: dev
+
+elementary:
+  outputs:
+    dev:
+      dremio_space: nessie
+      dremio_space_folder: elementary
+      object_storage_path: elementary
+      object_storage_source: nessie
+      password: fahmy12345
+      port: 9047
+      software_host: "{{ env_var('DREMIO_REST_HOST', '127.0.0.1') }}"
+      threads: 1
+      type: dremio
+      use_ssl: false
+      user: mofah
+  target: dev

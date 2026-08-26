@@ -1,0 +1,125 @@
+version: "3"
+
+services:
+
+  notebook:
+    image: alexmerced/spark33-notebook
+    container_name: notebook
+    networks:
+      lakehouse-network:
+    volumes:
+      - ./notebooks:/home/docker/notebooks
+      - ./datasets:/home/docker/datasets
+      - spark-notebooks:/home/docker/.ivy2
+    environment:
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      AWS_S3_ENDPOINT: http://minio:9000
+      NESSIE_URI: http://catalog:19120/api/v1
+      WAREHOUSE_BUCKET: ${WAREHOUSE_BUCKET}
+    ports:
+      - 8888:8888
+    #command: start-notebook.sh --NotebookApp.token=''  
+  nessie-init:
+    image: busybox
+    command: chown -R 185:0 /nessie-data
+    volumes:
+      - nessie-data:/nessie-data
+  # Nessie Catalog Server Using In-Memory Store
+  catalog:
+    image: projectnessie/nessie:latest
+    container_name: catalog
+    environment:
+      nessie.version.store.type: ROCKSDB
+      nessie.version.store.persist.rocks.database-path: /nessie-data
+      quarkus.http.port: "19120"
+                 
+    networks:
+      lakehouse-network:
+    ports:
+      - 19120:19120
+    volumes:
+      - nessie-data:/nessie-data   
+    depends_on:
+      nessie-init:
+        condition: service_completed_successfully  
+  # Minio Storage Server
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_DOMAIN: storage
+      MINIO_REGION_NAME: us-east-1
+      MINIO_REGION: us-east-1
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-data:/data    
+    networks:
+      lakehouse-network:
+    ports:
+      - 9001:9001
+      - 9000:9000
+    command: ["server", "/data", "--console-address", ":9001"]
+
+  # Postgres Database Server
+  # postgres:
+  #   image: postgres:latest
+  #   container_name: postgres
+  #   environment:
+  #     POSTGRES_DB: mydb
+  #     POSTGRES_USER: myuser
+  #     POSTGRES_PASSWORD: mypassword
+  #   ports:
+  #     - "5435:5432"
+  #   networks:
+  #     lakehouse-network:  
+  # Dremio
+  dremio:
+    platform: linux/x86_64
+    image: dremio/dremio-oss:latest
+    ports:
+      - 9047:9047
+      - 31010:31010
+      - 32010:32010
+    container_name: dremio
+    volumes:
+      - dremio-data:/opt/dremio/data    
+    networks:
+      lakehouse-network:
+  pricing-api:
+    # build:
+    #   context: ../..
+    #   dockerfile: ml/fast_api/Dockerfile
+    image: pricing-engine-api:v1.0  
+    container_name: pricing-api
+    command: uvicorn main:app --host 0.0.0.0 --port 8100 --reload
+    environment:
+      MODEL_PATH: /app/models/demand_model.joblib
+      RECOMMENDATIONS_SOURCE: parquet   # switch to "dremio" once the Spark write-back into nessie.ml.price_recommendations is built
+      RECOMMENDATIONS_PARQUET_PATH: /app/output/price_recommendations.parquet
+      DREMIO_REST_HOST: dremio
+      DREMIO_USER: mofah
+      DREMIO_PASSWORD: fahmy12345
+    volumes:
+      - pricing-models:/app/models:ro
+      - pricing-output:/app/output:ro
+    networks:
+      - lakehouse-network
+    ports:
+      - 8100:8100      
+volumes:
+  minio-data:
+  nessie-data:
+  dremio-data:
+  spark-notebooks:
+  pricing-models:
+    name: pricing-models
+  pricing-output:
+    name: pricing-output  
+
+
+networks:
+  lakehouse-network:
+    name: lakehouse-network
