@@ -417,15 +417,3 @@ python pipeline_ai_agent/lakehouse_ai_agent.py --dag-id ingestion_test --once
 ```
 ---
 
-# CV
-- Aggregated Analytics: Engineered a unified reporting layer in dbt on top of Gold Star Schemas to aggregate complex retail metrics for business decisions and model features
----
-
-
-Data Engineer with strong experience in building cloud-native data platforms, distributed processing pipelines, and enterprise Data Lakehouse architecture. Proficient in orchestrating end-to-end ETL/ELT workflows using Apache Spark, Airflow, dbt, and Apache Iceberg on multi-cluster Kubernetes and cloud environments (Azure & AWS). Hands-on experience integrating modern lakehouse catalogs (Project Nessie, Dremio, Unity Catalog) and data warehousing methodologies. Passionate about optimizing pipeline performance, enforcing robust data governance, and scaling analytics infrastructure for business-critical decision-making
-
-Cloud-Native Data Engineer specializing in containerized analytics infrastructure and high-throughput data pipelines. Proven track record in architecture design on Multi-Cluster Kubernetes (Kind), Spark Connect, and S3-compatible storage (MinIO/AWS). Skilled in building Medallion Architecture data lakes, implementing incremental loads, and automating batch/streaming pipelines with PySpark, Airflow, and Azure Databricks. Focused on delivery of high-availability, low-latency, and cost-optimized data solutions.
-
-
-
-Data Engineer with strong experience in building distributed data processing pipelines, cloud-native data platforms, and enterprise Data Lakehouse and Data Warehouses architecture. and automated ETL/ELT pipelines on Cloud (Azure & AWS) and Kubernetes/Docker environments. Focused on delivery of high-availability, low-latency, and cost-optimized data solutions.
