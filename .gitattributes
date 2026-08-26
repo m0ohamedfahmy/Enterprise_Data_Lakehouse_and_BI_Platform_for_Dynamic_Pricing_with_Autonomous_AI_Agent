@@ -1,11 +1,13 @@
 # See https://help.github.com/articles/dealing-with-large-files/ for more information about Git LFS.
 *.jar filter=lfs diff=lfs merge=lfs -text
 
-# Ignore coverage reports and generated HTML doc files from GitHub language statistics
+# Exclude generated HTML files and reports from repository language stats
 *.html linguist-vendored
 *.htm linguist-vendored
+*.html linguist-generated
+*.htm linguist-generated
 
-# Exclude specific directories containing heavy HTML files (e.g., htmlcov, docs, dbt build targets)
-htmlcov/* linguist-vendored
-docs/* linguist-vendored
-dbt/target/* linguist-vendored
+# Vendor specific directories (dbt artifacts, coverage, docs)
+dbt/target/** linguist-vendored
+htmlcov/** linguist-vendored
+docs/** linguist-vendored

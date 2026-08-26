@@ -3,45 +3,48 @@
 An autonomous AI SRE / Data Quality Guard for a 4-stage lakehouse pipeline
 (Airflow/Astro → PySpark/Iceberg/Nessie → dbt → ML training/inference),
 built with `langchain-groq` + `langgraph`. Runs as a host-OS Python process
-against your existing Astro and lakehouse Docker Compose stacks — no code
-changes to the pipeline itself required.
+against your existing Astro and lakehouse Docker Compose stacks 
 
 ## How it thinks about your pipeline
 
+---
+## AI Agent Flow 
+
+```mermaid
+flowchart TD
+    A["<b>Poll Loop</b><br/>Host OS"] --> B["<b>Airflow REST API</b><br/>Check Failed Tasks"]
+    B --> C{"Any run.state == failed?"}
+    
+    C -- Yes --> D["<b>For Each Failed Task Instance</b>"]
+    
+    D --> E["<b>STEP 1: Rules Engine</b><br/>Regex Signatures for Infra/Socket/MinIO"]
+    
+    E -- Miss --> F["<b>STEP 2: Error Classification</b><br/>Infra vs Script-Level Failure"]
+    E -- Hit --> M["<b>LangGraph Pipeline</b><br/>Diagnose ➔ Remediate ➔ Report"]
+    
+    F -- Script-Level --> G["<b>STEP 3: Script Resolver & Code Windowing</b><br/>• Path Mapping: os.path.basename<br/>• Ingestion direct scan & dbt/ML line parser<br/>• Snippet Windowing: ±25 lines error context<br/>• Log Tail Truncation: Max 6000 chars"]
+    F -- Infra Failure --> M
+    
+    G --> H["<b>STEP 4: Groq LLM Diagnosis & RCA Engine</b><br/>• Concise Windowed Prompting<br/>• Category, Root Cause & Action<br/>• Buggy Code vs Corrected Code Snippet"]
+    
+    H --> M
+    
+    M --> I["<b>1. retry_task</b><br/>Airflow REST API<br/>Clear Task Instances"]
+    M --> J["<b>2. create_quarantine_branch</b><br/>Nessie Data Isolation<br/>off main branch"]
+    M --> K["<b>3. alert_only / escalate</b><br/>• Rich Terminal UI with Code Diff<br/>• Full Shadow Fix Script Patch<br/>• RCA Markdown Report"]
+
+    classDef default fill:#0f172a,stroke:#38bdf8,stroke-width:1px,color:#f8fafc;
+    classDef decision fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#eef2ff;
+    classDef action fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ecfdf5;
+    
+    class C decision;
+    class I,J,K action;
+
 ```
-                 ┌─────────────────────────────────────────┐
-                 │            poll loop (host OS)           │
-                 └─────────────────────────────────────────┘
-                                    │
-                 Airflow REST API: latest DAG runs
-                                    │
-                          any run.state == failed?
-                                    │
-                   ┌────────────────┴────────────────┐
-                   │ for each failed task instance     │
-                   ▼                                    
-     ┌───────────────────────────┐        ┌─────────────────────────┐
-     │ 1. rules engine (regex)   │──miss──▶│ 2. GroqCloud classify+RCA│
-     │  known error signatures   │         │  FAST → route decision   │
-     │  (free, instant)          │         │  CODE/REASON → RCA JSON  │
-     └───────────────────────────┘         └─────────────────────────┘
-                   │                                    │
-                   └───────────────┬────────────────────┘
-                                    ▼
-                     Diagnosis (category, root cause,
-                       recommended fix + action)
-                                    ▼
-                ┌────────────────────────────────────────┐
-                │  LangGraph: diagnose → remediate → report│
-                └────────────────────────────────────────┘
-                                    ▼
-        ┌──────────────┬──────────────────┬────────────────────┐
-        │ retry_task   │ create_quarantine │ alert_only /        │
-        │ (Airflow     │ _branch (Nessie:  │ escalate_to_human   │
-        │  clearTask   │  isolate bad data │ (Slack/console +    │
-        │  Instances)  │  off `main`)      │  RCA report only)   │
-        └──────────────┴──────────────────┴────────────────────┘
-```
+---
+## AI Agent Output Screen
+![AI Agent Output Screen](/designs/agent_ai_output.png)
+---
 
 Independent of task failures, every cycle also runs two **proactive guards**:
 a Nessie reference check (flags long-lived `quarantine/*` branches) and an
@@ -117,30 +120,24 @@ requirements.txt
      on Windows. No extra setup if `docker ps` already works from your
      shell.
 
-2. **Install:**
-   ```bash
-   python3 -m venv .venv && source .venv/bin/activate
-   pip install -r requirements.txt
-   cp .env.example .env   # then fill in GROQ_API_KEY at minimum
-   ```
+2. **Run once (good for a first check / CI / cron):**
 
-3. **Run once (good for a first check / CI / cron):**
    ```bash
    python lakehouse_ai_agent.py --dag-id lakehouse_pipeline --once
    ```
 
-4. **Run continuously, diagnose-only:**
+3. **Run continuously, diagnose-only:**
+
    ```bash
    python lakehouse_ai_agent.py --dag-id lakehouse_pipeline --poll-interval 30
    ```
 
-5. **Run continuously with self-healing enabled:**
+4. **Run continuously with self-healing enabled:**
+
    ```bash
    python lakehouse_ai_agent.py --dag-id lakehouse_pipeline --auto-heal --max-auto-retries 2
    ```
 
-RCA reports land in `./rca_reports/*.md` (configurable via `RCA_OUTPUT_DIR`),
-one per diagnosed failure, whether or not it was auto-healed.
 
 ## CLI reference
 
@@ -168,43 +165,3 @@ one per diagnosed failure, whether or not it was auto-healed.
   supports interrupts; add a conditional edge in `agent_graph.py` between
   `diagnose` and `remediate` that pauses when `diagnosis.confidence` is
   below a threshold.
-
-## Airflow 2.x vs 3.x
-
-Astro's default local Runtime moved to **Airflow 3** during 2025, which
-changed the REST API in two ways the agent has to account for:
-
-| | Airflow 2.x | Airflow 3.x |
-|---|---|---|
-| API base path | `/api/v1` | `/api/v2` |
-| Auth | HTTP Basic (`admin`/`admin` locally) | JWT bearer token from `POST /auth/token` |
-
-`AirflowClient` auto-detects which one it's talking to: it first tries
-`POST {AIRFLOW_BASE_URL}/auth/token` with your configured
-username/password. A 404 there means Airflow 2.x, so it falls back to
-`/api/v1` + basic auth; a successful token response means Airflow 3.x, so
-it uses `/api/v2` + `Authorization: Bearer <token>`. Set `AIRFLOW_BASE_URL`
-to the **root** webserver URL (`http://localhost:8080`, no `/api/...`
-suffix) and let it detect — or force it with `--airflow-api-version 1|2`
-if you're behind a proxy that swallows the 404 signal.
-
-If you're on Astro's default `simple_auth_manager`, `admin`/`admin` won't
-necessarily be your credentials — that auth manager auto-generates a
-password per user and prints it in the webserver container logs on
-startup (`astro dev logs -w`), unless you've set
-`AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS=True`, in which case any
-username with no password authenticates as admin.
-
-## Known limitations (be upfront about these before calling it "done")
-
-- Retry counters are in-memory only and reset on restart. For a durable
-  count across restarts, back `_RETRY_COUNTS` with SQLite or Redis.
-- `_TASK_ID_STAGE_HINTS` is a naming-convention heuristic — for pipelines
-  with less predictable task IDs, consider tagging tasks with an Airflow
-  label/param the agent can read instead.
-- Groq model IDs are point-in-time; re-verify against the current catalog
-  before production deployment.
-- The v1/v2 auto-detection assumes the webserver is reachable and answers
-  `/auth/token` with either a token or a clean 404 — an auth proxy in front
-  of Airflow that returns its own 404 page for *every* path will confuse
-  it; use `--airflow-api-version` to force the right one in that case.

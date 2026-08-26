@@ -1,6 +1,5 @@
 b_models/
 lakehouse_agent/
-Iceberg_Pipeline_Documentation.docx
 iceberg_pipeline_execution_flow.html
 setup.md
 req.txt
