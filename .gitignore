@@ -14,3 +14,8 @@ lakehouse/notebooks/price_recommendations_end.parquet
 lakehouse/notebooks/test.py
 lakehouse/notebooks/Untitled.ipynb
 lakehouse/notebooks/utils.py
+airflow/dags/dbt.py
+airflow/dags/exampledag.py
+airflow/dags/ml_train_model.py
+airflow/dags/ml.py
+airflow/dags/pipeline.py
