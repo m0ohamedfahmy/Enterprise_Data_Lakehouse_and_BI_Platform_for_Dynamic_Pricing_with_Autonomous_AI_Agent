@@ -3,6 +3,7 @@ lakehouse_agent/
 Iceberg_Pipeline_Documentation.docx
 iceberg_pipeline_execution_flow.html
 setup.md
+req.txt
 sql_dremio_query.md
 lakehouse/notebooks/demand_model.joblib_fi
 lakehouse/notebooks/demand_model.joblib_fi_1
@@ -14,8 +15,4 @@ lakehouse/notebooks/price_recommendations_end.parquet
 lakehouse/notebooks/test.py
 lakehouse/notebooks/Untitled.ipynb
 lakehouse/notebooks/utils.py
-airflow/dags/dbt.py
-airflow/dags/exampledag.py
-airflow/dags/ml_train_model.py
-airflow/dags/ml.py
-airflow/dags/pipeline.py
+!airflow/dags/lakehouse_pipeline.py
