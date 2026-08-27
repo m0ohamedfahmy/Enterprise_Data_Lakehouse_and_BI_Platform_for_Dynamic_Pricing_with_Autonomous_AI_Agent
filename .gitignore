@@ -16,3 +16,4 @@ lakehouse/notebooks/Untitled.ipynb
 lakehouse/notebooks/utils.py
 airflow/dags/*
 !airflow/dags/lakehouse_pipeline.py
+documentation/Iceberg_Pipeline_Documentation.docx
