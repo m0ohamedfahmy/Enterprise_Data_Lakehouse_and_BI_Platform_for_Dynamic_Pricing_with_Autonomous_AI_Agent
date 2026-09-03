@@ -16,7 +16,7 @@ An executive-level, interactive Business Intelligence solution powered by **Powe
 
 Below is the production-ready Power BI dashboard layout featuring real-time KPI tracking, competitor price dispersion, competitive gap trends, and predictive product recommendations:
 
-![Executive Dynamic Pricing Dashboard](designs/ML_dashboard.png)
+![Executive Dynamic Pricing Dashboard](../designs/ML_dashboard.png)
 
 ---
 
@@ -33,7 +33,7 @@ Below is the production-ready Power BI dashboard layout featuring real-time KPI 
 
 The dashboard is powered by an enterprise Gold Data Mart designed using dimensional modeling standards (Star Schema) to ensure sub-second query performance and seamless ML inference integration.
 
-![Data Warehouse Architecture](designs/Data_Warehouse_Architecture.png)
+![Data Warehouse Architecture](../designs/Data_Warehouse_Architecture.png)
 
 ---
 
