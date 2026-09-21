@@ -24,7 +24,7 @@
 - **Distributed Lakehouse Architecture:** 
     - Engineered an Enterprise Data Lakehouse using `Apache Spark`, `Apache Iceberg`, `MinIO`, and `Nessie` for Git-like catalog versioning, and `Dremio` for Copute & Querey Engine, orchestrated via `Apache Airflow`.
 - **Data Modeling & Data Transformation Layer:**
-    - Built an Enterprise Data Warehouse using a `dbt` `Medallion architecture` (Bronze , Silver , Gold), transforming raw data into Gold layer Star Schemas featuring `multiple Fact tables` and `shared Dimension tables` to power retail analytics and pricing marts.
+    - Architected a dbt Medallion Data Warehouse using a `Galaxy Schema` design with multiple Fact tables at `different granularities` and shared Dimensions, building high-performance Gold Data Marts to power sub-second Power BI dashboards and downstream ML models.
 - **BI Layer:** 
     - Built a high-performance aggregated reporting layer over the Data Warehouse (Gold Data Marts) using dbt, powering sub-second executive Power BI dashboards and serving feature inputs for downstream Machine Learning models.
 - **Data Observability & Data Quality Layer:**
